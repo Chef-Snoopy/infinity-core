@@ -501,6 +501,9 @@ library BinPool {
             /// @dev Only for first liquidity provider for the bin, deduct MINIMUM_SHARE, expected to underflow
             /// if shares < MINIMUM_SHARE for first mint
             userShareAdded = shares - MINIMUM_SHARE;
+            /// @dev Reject a first mint that locks the minimum but leaves the minter with no share, otherwise
+            /// the bin ends up with reserves and a tree entry that no position owns (see burn-side threshold)
+            if (userShareAdded == 0) revert BinPool__ZeroShares(binId);
         }
 
         self.positions.get(owner, binId, salt).addShare(userShareAdded);
