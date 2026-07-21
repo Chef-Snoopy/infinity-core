@@ -365,6 +365,76 @@ contract BinPoolLiquidityTest is BinTestHelper {
         poolManager.mint(key, params, "0x00");
     }
 
+    /// @dev A first mint whose computed shares equal MINIMUM_SHARE leaves the minter with zero share.
+    /// Core must reject it, otherwise the bin keeps reserves and a tree entry that no position owns.
+    function test_revert_MintExactMinimumShareFirstMint() external {
+        // binStep = 1 with a bin whose raw Q128.128 price is 1, so shares == price * amountX == amountX.
+        (PoolKey memory minKey, PoolId minPoolId) = _initMinStepPool();
+        uint24 barrierId = ID_ONE - 887_271;
+
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = LiquidityConfigurations.encodeParams(1e18, 0, barrierId);
+
+        // amountX == MINIMUM_SHARE (1000) => shares == 1000 == MINIMUM_SHARE => userShareAdded == 0.
+        IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
+            liquidityConfigs: data,
+            amountIn: PackedUint128Math.encode(1_000, 0),
+            salt: 0
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(BinPool.BinPool__ZeroShares.selector, barrierId));
+        poolManager.mint(minKey, params, "0x00");
+
+        // No poisoned state is left behind.
+        (uint128 reserveX,,, uint256 totalShares) = poolManager.getBin(minPoolId, barrierId);
+        assertEq(reserveX, 0, "no reserves retained");
+        assertEq(totalShares, 0, "no shares retained");
+    }
+
+    /// @dev One share above the minimum is the smallest valid first mint: minter owns 1 share and the bin trades.
+    function test_MintMinimumSharePlusOneFirstMint() external {
+        (PoolKey memory minKey, PoolId minPoolId) = _initMinStepPool();
+        uint24 barrierId = ID_ONE - 887_271;
+
+        bytes32[] memory data = new bytes32[](1);
+        data[0] = LiquidityConfigurations.encodeParams(1e18, 0, barrierId);
+
+        IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
+            liquidityConfigs: data,
+            amountIn: PackedUint128Math.encode(1_001, 0),
+            salt: 0
+        });
+        poolManager.mint(minKey, params, "0x00");
+
+        (uint128 reserveX,,, uint256 totalShares) = poolManager.getBin(minPoolId, barrierId);
+        assertEq(reserveX, 1_001, "reserves retained");
+        assertEq(totalShares, 1_001, "supply equals shares minted");
+        assertEq(
+            poolManager.getPosition(minPoolId, address(this), barrierId, 0).share,
+            1,
+            "minter owns shares beyond the minimum"
+        );
+        assertEq(
+            poolManager.getNextNonEmptyBin(minPoolId, true, barrierId + 1), barrierId, "owned bin is in the swap tree"
+        );
+    }
+
+    function _initMinStepPool() internal returns (PoolKey memory minKey, PoolId minPoolId) {
+        bytes32 minParam;
+        minParam = minParam.setBinStep(1);
+        minKey = PoolKey({
+            currency0: Currency.wrap(makeAddr("token0")),
+            currency1: Currency.wrap(makeAddr("token1")),
+            hooks: IHooks(address(0)),
+            poolManager: IPoolManager(address(poolManager)),
+            fee: uint24(0),
+            parameters: minParam
+        });
+        minPoolId = minKey.toId();
+        poolManager.initialize(minKey, ID_ONE - 887_272);
+        vault.updateCurrentPoolKey(minKey);
+    }
+
     function test_revert_MintMoreThanAmountSent() external {
         poolManager.initialize(key, activeId);
 
