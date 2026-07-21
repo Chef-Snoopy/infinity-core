@@ -474,6 +474,9 @@ contract VaultTest is Test, NoIsolate, TokenFixture {
     }
 
     function testLockInSufficientBalanceWhenMoreThanOnePoolManagers() public noIsolate {
+        // app1's overdraw (crossing into app2's reserves) is never repaid within the lock,
+        // so the lock itself reverts
+        vm.expectRevert(IVault.AppCurrencyNotFullyRepaid.selector);
         vault.lock(abi.encodeCall(VaultTest._testLockInSufficientBalanceWhenMoreThanOnePoolManagers, ()));
     }
 
@@ -494,12 +497,17 @@ contract VaultTest is Test, NoIsolate, TokenFixture {
         assertEq(vault.reservesOfApp(address(poolKey2.poolManager), currency0), 10 ether);
         assertEq(vault.reservesOfApp(address(poolKey2.poolManager), currency1), 10 ether);
 
-        // try to get more than 10 ether from pool1
-        assertEq(currency0.balanceOfSelf(), 980 ether);
-        currency0.transfer(address(vault), 15 ether);
-
-        vm.expectRevert(stdError.arithmeticError);
+        // try to get more than 10 ether from pool1: no longer an immediate arithmetic revert —
+        // the shortfall is recorded as a transient deficit that must be repaid before the lock ends
         poolManager1.mockAccounting(poolKey1, 15 ether, -10 ether);
+        assertEq(vault.reservesOfApp(address(poolKey1.poolManager), currency0), 0);
+        assertEq(vault.appCurrencyDeficit(address(poolKey1.poolManager), currency0), 5 ether);
+
+        // net out the vault-level deltas so the unrepaid app deficit is the only thing outstanding;
+        // the lock then reverts with AppCurrencyNotFullyRepaid (expected by the caller)
+        currency0.take(vault, address(this), 15 ether, false);
+        currency1.settle(vault, address(this), 10 ether, false);
+        assertEq(vault.getUnsettledDeltasCount(), 0);
     }
 
     function testLockFlashloanCrossMoreThanOnePoolManagers() public noIsolate {
@@ -866,10 +874,7 @@ contract VaultTest is Test, NoIsolate, TokenFixture {
     }
 
     /// @dev assume add liqudiity where user add liquidity and hook also take a fee (half of liquidity)
-    function testFuzzAccountBalanceDeltaWithHookDelta_AddLiquidityHookFee(uint256 amt0, uint256 amt1)
-        public
-        noIsolate
-    {
+    function testFuzzAccountBalanceDeltaWithHookDelta_AddLiquidityHookFee(uint256 amt0, uint256 amt1) public noIsolate {
         amt0 = bound(amt0, 0, 10 ether);
         amt1 = bound(amt1, 0, 10 ether);
         vault.lock(
