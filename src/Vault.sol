@@ -9,6 +9,7 @@ import {Currency, CurrencyLibrary} from "./types/Currency.sol";
 import {BalanceDelta} from "./types/BalanceDelta.sol";
 import {ILockCallback} from "./interfaces/ILockCallback.sol";
 import {SafeCast} from "./libraries/SafeCast.sol";
+import {AppDeficit} from "./libraries/AppDeficit.sol";
 import {VaultReserve} from "./libraries/VaultReserve.sol";
 import {VaultToken} from "./VaultToken.sol";
 
@@ -58,6 +59,16 @@ contract Vault is IVault, VaultToken, Ownable2Step {
         return SettlementGuard.getCurrencyDelta(settler, currency);
     }
 
+    /// @inheritdoc IVault
+    function getAppDeficitCount() external view override returns (uint256) {
+        return AppDeficit.count();
+    }
+
+    /// @inheritdoc IVault
+    function appCurrencyDeficit(address app, Currency currency) external view override returns (uint256) {
+        return AppDeficit.getDeficit(app, currency);
+    }
+
     /// @dev interaction must start from lock
     /// @inheritdoc IVault
     function lock(bytes calldata data) external override returns (bytes memory result) {
@@ -67,6 +78,8 @@ contract Vault is IVault, VaultToken, Ownable2Step {
         result = ILockCallback(msg.sender).lockAcquired(data);
         /// @notice the caller can do anything in this callback as long as all deltas are offset after this
         if (SettlementGuard.getUnsettledDeltasCount() != 0) revert CurrencyNotSettled();
+        /// @notice any mid-lock borrow against an app's reserves must be fully repaid by now
+        if (AppDeficit.count() != 0) revert AppCurrencyNotFullyRepaid();
 
         /// @dev release the lock
         SettlementGuard.setLocker(address(0));
@@ -197,11 +210,27 @@ contract Vault is IVault, VaultToken, Ownable2Step {
 
         /// @dev optimization: msg.sender will always be app address, verification should be done on caller address
         if (delta >= 0) {
-            /// @dev arithmetic underflow make sure trader can't withdraw too much from app
-            reservesOfApp[msg.sender][currency] -= uint128(delta);
+            /// @dev "trader can't withdraw too much from app" is enforced at the end of the lock:
+            /// mid-lock the reserve may be transiently overdrawn (e.g. a hook re-enters the app in a
+            /// callback before the outer operation's delta is booked). The shortfall is floored here
+            /// and recorded as a transient deficit that must be repaid before the lock is released.
+            uint256 reserve = reservesOfApp[msg.sender][currency];
+            uint256 amount = uint128(delta);
+            unchecked {
+                if (reserve >= amount) {
+                    reservesOfApp[msg.sender][currency] = reserve - amount;
+                } else {
+                    reservesOfApp[msg.sender][currency] = 0;
+                    AppDeficit.add(msg.sender, currency, amount - reserve);
+                }
+            }
         } else {
-            /// @dev arithmetic overflow make sure trader won't deposit too much into app
-            reservesOfApp[msg.sender][currency] += uint128(-delta);
+            /// @dev repay any outstanding deficit first; while a deficit exists the storage reserve is 0
+            uint256 remaining = AppDeficit.repay(msg.sender, currency, uint128(-delta));
+            if (remaining != 0) {
+                /// @dev arithmetic overflow make sure trader won't deposit too much into app
+                reservesOfApp[msg.sender][currency] += remaining;
+            }
         }
     }
 

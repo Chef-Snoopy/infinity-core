@@ -173,10 +173,11 @@ library CLHooks {
         int128 hookDeltaUnspecified = beforeSwapDelta.getUnspecifiedDelta();
         if (key.parameters.shouldCall(HOOKS_AFTER_SWAP_OFFSET, hooks)) {
             hookDeltaUnspecified += Hooks.callHookWithReturnDelta(
-                hooks,
-                abi.encodeCall(ICLHooks.afterSwap, (msg.sender, key, params, delta, hookData)),
-                key.parameters.hasOffsetEnabled(HOOKS_AFTER_SWAP_RETURNS_DELTA_OFFSET)
-            ).toInt128();
+                    hooks,
+                    abi.encodeCall(ICLHooks.afterSwap, (msg.sender, key, params, delta, hookData)),
+                    key.parameters.hasOffsetEnabled(HOOKS_AFTER_SWAP_RETURNS_DELTA_OFFSET)
+                )
+                .toInt128();
         }
 
         BalanceDelta hookDelta;

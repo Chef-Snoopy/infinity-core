@@ -27,21 +27,39 @@ contract MockProtocolFeeController is IProtocolFeeController {
 contract RevertingMockProtocolFeeController is IProtocolFeeController {
     error DevsBlock();
 
-    function protocolFeeForPool(PoolKey memory /* key */ ) external pure returns (uint24) {
+    function protocolFeeForPool(
+        PoolKey memory /* key */
+    )
+        external
+        pure
+        returns (uint24)
+    {
         revert DevsBlock();
     }
 }
 
 /// @notice Returns an out of bounds protocol fee
 contract OutOfBoundsMockProtocolFeeController is IProtocolFeeController {
-    function protocolFeeForPool(PoolKey memory /* key */ ) external pure returns (uint24) {
+    function protocolFeeForPool(
+        PoolKey memory /* key */
+    )
+        external
+        pure
+        returns (uint24)
+    {
         return ProtocolFeeLibrary.MAX_PROTOCOL_FEE + 1;
     }
 }
 
 /// @notice Return a value that overflows a uint24
 contract OverflowMockProtocolFeeController is IProtocolFeeController {
-    function protocolFeeForPool(PoolKey memory /* key */ ) external pure returns (uint24) {
+    function protocolFeeForPool(
+        PoolKey memory /* key */
+    )
+        external
+        pure
+        returns (uint24)
+    {
         assembly {
             let ptr := mload(0x40)
             mstore(ptr, 0xFFFFFFFFAAA001)
@@ -52,7 +70,13 @@ contract OverflowMockProtocolFeeController is IProtocolFeeController {
 
 /// @notice Returns data that is larger than a word
 contract InvalidReturnSizeMockProtocolFeeController is IProtocolFeeController {
-    function protocolFeeForPool(PoolKey memory /* key */ ) external view returns (uint24) {
+    function protocolFeeForPool(
+        PoolKey memory /* key */
+    )
+        external
+        view
+        returns (uint24)
+    {
         address a = address(this);
         assembly {
             let ptr := mload(0x40)

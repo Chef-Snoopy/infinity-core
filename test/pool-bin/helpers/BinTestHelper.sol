@@ -78,7 +78,11 @@ abstract contract BinTestHelper is Test {
         uint24 binId,
         uint256 amount,
         bool left // adding to the left side of activeId will be tokenY
-    ) internal pure returns (IBinPoolManager.MintParams memory params) {
+    )
+        internal
+        pure
+        returns (IBinPoolManager.MintParams memory params)
+    {
         bytes32[] memory liquidityConfigurations = new bytes32[](1);
 
         if (left) {

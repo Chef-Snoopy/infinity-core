@@ -170,7 +170,8 @@ library Tick {
         // update two members in one go
         assembly ("memory-safe") {
             sstore(
-                info.slot, or(and(liquidityGrossAfter, 0xffffffffffffffffffffffffffffffff), shl(128, liquidityNetAfter))
+                info.slot,
+                or(and(liquidityGrossAfter, 0xffffffffffffffffffffffffffffffff), shl(128, liquidityNetAfter))
             )
         }
     }

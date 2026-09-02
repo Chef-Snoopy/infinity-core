@@ -100,11 +100,12 @@ contract MockHooks is ICLHooks {
     {
         beforeSwapData = hookData;
         bytes4 selector = MockHooks.beforeSwap.selector;
-        return (
-            returnValues[selector] == bytes4(0) ? selector : returnValues[selector],
-            BeforeSwapDeltaLibrary.ZERO_DELTA,
-            0
-        );
+        return
+            (
+                returnValues[selector] == bytes4(0) ? selector : returnValues[selector],
+                BeforeSwapDeltaLibrary.ZERO_DELTA,
+                0
+            );
     }
 
     function afterSwap(

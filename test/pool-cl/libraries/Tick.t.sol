@@ -40,9 +40,10 @@ contract TickTest is Test {
         pool.slot0 = pool.slot0.setTick(tickCurrent);
         pool.feeGrowthGlobal0X128 = feeGrowthGlobal0X128;
         pool.feeGrowthGlobal1X128 = feeGrowthGlobal1X128;
-        return pool.ticks.getFeeGrowthInside(
-            tickLower, tickUpper, pool.slot0.tick(), pool.feeGrowthGlobal0X128, pool.feeGrowthGlobal1X128
-        );
+        return pool.ticks
+            .getFeeGrowthInside(
+                tickLower, tickUpper, pool.slot0.tick(), pool.feeGrowthGlobal0X128, pool.feeGrowthGlobal1X128
+            );
     }
 
     function update(
@@ -56,15 +57,16 @@ contract TickTest is Test {
         pool.slot0 = pool.slot0.setTick(tickCurrent);
         pool.feeGrowthGlobal0X128 = feeGrowthGlobal0X128;
         pool.feeGrowthGlobal1X128 = feeGrowthGlobal1X128;
-        flipped = pool.ticks.update(
-            tick,
-            tickCurrent,
-            liquidityDelta,
-            feeGrowthGlobal0X128,
-            feeGrowthGlobal1X128,
-            upper,
-            tickSpacingToMaxLiquidityPerTick(LOW_TICK_SPACING)
-        );
+        flipped = pool.ticks
+            .update(
+                tick,
+                tickCurrent,
+                liquidityDelta,
+                feeGrowthGlobal0X128,
+                feeGrowthGlobal1X128,
+                upper,
+                tickSpacingToMaxLiquidityPerTick(LOW_TICK_SPACING)
+            );
 
         liquidityGrossAfter = pool.ticks[tick].liquidityGross;
     }
@@ -81,9 +83,16 @@ contract TickTest is Test {
         pool.slot0 = pool.slot0.setTick(tickCurrent);
         pool.feeGrowthGlobal0X128 = feeGrowthGlobal0X128;
         pool.feeGrowthGlobal1X128 = feeGrowthGlobal1X128;
-        flipped = pool.ticks.update(
-            tick, tickCurrent, liquidityDelta, feeGrowthGlobal0X128, feeGrowthGlobal1X128, upper, maxLiquidityPerTick
-        );
+        flipped = pool.ticks
+            .update(
+                tick,
+                tickCurrent,
+                liquidityDelta,
+                feeGrowthGlobal0X128,
+                feeGrowthGlobal1X128,
+                upper,
+                maxLiquidityPerTick
+            );
 
         liquidityGrossAfter = pool.ticks[tick].liquidityGross;
     }

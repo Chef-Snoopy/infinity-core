@@ -13,9 +13,7 @@ interface IUniswapV3Pool {
     function mint(address recipient, int24 tickLower, int24 tickUpper, uint128 amount, bytes calldata data)
         external
         returns (uint256 amount0, uint256 amount1);
-    function burn(int24 tickLower, int24 tickUpper, uint128 amount)
-        external
-        returns (uint256 amount0, uint256 amount1);
+    function burn(int24 tickLower, int24 tickUpper, uint128 amount) external returns (uint256 amount0, uint256 amount1);
     function swap(
         address recipient,
         bool zeroForOne,

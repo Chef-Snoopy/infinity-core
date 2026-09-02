@@ -14,6 +14,10 @@ interface IVault is IVaultToken {
     /// @notice Thrown when a currency is not netted out after a lock
     error CurrencyNotSettled();
 
+    /// @notice Thrown when an app's reserve deficit (transient mid-lock borrow against
+    /// reservesOfApp) is not fully repaid by the end of the lock
+    error AppCurrencyNotFullyRepaid();
+
     /// @notice Thrown when there is already a locker
     /// @param locker The address of the current locker
     error LockerAlreadySet(address locker);
@@ -50,6 +54,14 @@ interface IVault is IVaultToken {
     /// @notice Get the current delta for a locker in the given currency
     /// @param currency The currency for which to lookup the delta
     function currencyDelta(address settler, Currency currency) external view returns (int256);
+
+    /// @notice Returns the number of (app, currency) pairs with an outstanding transient reserve deficit
+    function getAppDeficitCount() external view returns (uint256 count);
+
+    /// @notice Get the outstanding transient reserve deficit for a given app and currency
+    /// @param app The app whose deficit to lookup
+    /// @param currency The currency for which to lookup the deficit
+    function appCurrencyDeficit(address app, Currency currency) external view returns (uint256);
 
     /// @notice All operations go through this function
     /// @param data Any data to pass to the callback, via `ILockCallback(msg.sender).lockCallback(data)`

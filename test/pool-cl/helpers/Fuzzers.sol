@@ -78,14 +78,15 @@ contract Fuzzers is StdUtils {
         maxAmount1 = maxAmount1 > amount1 ? amount1 : maxAmount1;
 
         int256 liquidityMaxByAmount = uint256(
-            LiquidityAmounts.getLiquidityForAmounts(
-                sqrtPriceX96,
-                TickMath.getSqrtRatioAtTick(tickLower),
-                TickMath.getSqrtRatioAtTick(tickUpper),
-                maxAmount0,
-                maxAmount1
+                LiquidityAmounts.getLiquidityForAmounts(
+                    sqrtPriceX96,
+                    TickMath.getSqrtRatioAtTick(tickLower),
+                    TickMath.getSqrtRatioAtTick(tickUpper),
+                    maxAmount0,
+                    maxAmount1
+                )
             )
-        ).toInt256();
+            .toInt256();
 
         return liquidityMaxByAmount;
     }

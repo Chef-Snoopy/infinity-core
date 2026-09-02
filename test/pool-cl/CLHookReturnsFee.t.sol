@@ -86,9 +86,7 @@ contract CLHookReturnsFeeTest is Test, Deployers, TokenFixture {
             result = router.swap(
                 key,
                 ICLPoolManager.SwapParams({
-                    zeroForOne: true,
-                    amountSpecified: amountSpecified,
-                    sqrtPriceLimitX96: SQRT_RATIO_1_2
+                    zeroForOne: true, amountSpecified: amountSpecified, sqrtPriceLimitX96: SQRT_RATIO_1_2
                 }),
                 CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
                 ZERO_BYTES
@@ -98,9 +96,7 @@ contract CLHookReturnsFeeTest is Test, Deployers, TokenFixture {
             result = router.swap(
                 key,
                 ICLPoolManager.SwapParams({
-                    zeroForOne: true,
-                    amountSpecified: amountSpecified,
-                    sqrtPriceLimitX96: SQRT_RATIO_1_2
+                    zeroForOne: true, amountSpecified: amountSpecified, sqrtPriceLimitX96: SQRT_RATIO_1_2
                 }),
                 CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
                 ZERO_BYTES
@@ -142,9 +138,7 @@ contract CLHookReturnsFeeTest is Test, Deployers, TokenFixture {
         BalanceDelta result = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: amountSpecified,
-                sqrtPriceLimitX96: SQRT_RATIO_1_2
+                zeroForOne: true, amountSpecified: amountSpecified, sqrtPriceLimitX96: SQRT_RATIO_1_2
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ZERO_BYTES
@@ -185,9 +179,7 @@ contract CLHookReturnsFeeTest is Test, Deployers, TokenFixture {
         BalanceDelta result = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: amountSpecified,
-                sqrtPriceLimitX96: SQRT_RATIO_1_2
+                zeroForOne: true, amountSpecified: amountSpecified, sqrtPriceLimitX96: SQRT_RATIO_1_2
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ZERO_BYTES
@@ -212,9 +204,7 @@ contract CLHookReturnsFeeTest is Test, Deployers, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: amountSpecified,
-                sqrtPriceLimitX96: SQRT_RATIO_1_2
+                zeroForOne: true, amountSpecified: amountSpecified, sqrtPriceLimitX96: SQRT_RATIO_1_2
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ZERO_BYTES

@@ -65,7 +65,9 @@ contract BinSwapHelper {
             if (delta.amount0() < 0) {
                 bool burn = !data.testSettings.settleUsingTransfer;
                 // transfer VaultToken to vault before calling settle if burn
-                if (burn) vault.transferFrom(data.sender, address(this), data.key.currency0, uint128(-delta.amount0()));
+                if (burn) {
+                    vault.transferFrom(data.sender, address(this), data.key.currency0, uint128(-delta.amount0()));
+                }
                 data.key.currency0.settle(vault, data.sender, uint128(-delta.amount0()), burn);
             }
 
