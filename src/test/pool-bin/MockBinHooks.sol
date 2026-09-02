@@ -94,11 +94,12 @@ contract MockBinHooks is IBinHooks {
     {
         beforeSwapData = hookData;
         bytes4 selector = MockBinHooks.beforeSwap.selector;
-        return (
-            returnValues[selector] == bytes4(0) ? selector : returnValues[selector],
-            BeforeSwapDeltaLibrary.ZERO_DELTA,
-            0
-        );
+        return
+            (
+                returnValues[selector] == bytes4(0) ? selector : returnValues[selector],
+                BeforeSwapDeltaLibrary.ZERO_DELTA,
+                0
+            );
     }
 
     function afterSwap(address, PoolKey calldata, bool, int128, BalanceDelta, bytes calldata hookData)

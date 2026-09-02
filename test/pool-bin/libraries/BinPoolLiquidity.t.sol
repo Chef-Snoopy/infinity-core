@@ -343,9 +343,7 @@ contract BinPoolLiquidityTest is BinTestHelper {
         poolManager.initialize(key, activeId);
 
         IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
-            liquidityConfigs: new bytes32[](0),
-            amountIn: PackedUint128Math.encode(0, 0),
-            salt: 0
+            liquidityConfigs: new bytes32[](0), amountIn: PackedUint128Math.encode(0, 0), salt: 0
         });
 
         vm.expectRevert(BinPool.BinPool__EmptyLiquidityConfigs.selector);
@@ -376,11 +374,8 @@ contract BinPoolLiquidityTest is BinTestHelper {
         data[0] = LiquidityConfigurations.encodeParams(1e18, 0, barrierId);
 
         // amountX == MINIMUM_SHARE (1000) => shares == 1000 == MINIMUM_SHARE => userShareAdded == 0.
-        IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
-            liquidityConfigs: data,
-            amountIn: PackedUint128Math.encode(1_000, 0),
-            salt: 0
-        });
+        IBinPoolManager.MintParams memory params =
+            IBinPoolManager.MintParams({liquidityConfigs: data, amountIn: PackedUint128Math.encode(1_000, 0), salt: 0});
 
         vm.expectRevert(abi.encodeWithSelector(BinPool.BinPool__ZeroShares.selector, barrierId));
         poolManager.mint(minKey, params, "0x00");
@@ -399,11 +394,8 @@ contract BinPoolLiquidityTest is BinTestHelper {
         bytes32[] memory data = new bytes32[](1);
         data[0] = LiquidityConfigurations.encodeParams(1e18, 0, barrierId);
 
-        IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
-            liquidityConfigs: data,
-            amountIn: PackedUint128Math.encode(1_001, 0),
-            salt: 0
-        });
+        IBinPoolManager.MintParams memory params =
+            IBinPoolManager.MintParams({liquidityConfigs: data, amountIn: PackedUint128Math.encode(1_001, 0), salt: 0});
         poolManager.mint(minKey, params, "0x00");
 
         (uint128 reserveX,,, uint256 totalShares) = poolManager.getBin(minPoolId, barrierId);
@@ -444,9 +436,7 @@ contract BinPoolLiquidityTest is BinTestHelper {
         vm.expectRevert(PackedUint128Math.PackedUint128Math__SubUnderflow.selector);
 
         IBinPoolManager.MintParams memory params = IBinPoolManager.MintParams({
-            liquidityConfigs: data,
-            amountIn: PackedUint128Math.encode(1e18, 1e18),
-            salt: 0
+            liquidityConfigs: data, amountIn: PackedUint128Math.encode(1e18, 1e18), salt: 0
         });
         poolManager.mint(key, params, "0x00");
 
@@ -454,9 +444,7 @@ contract BinPoolLiquidityTest is BinTestHelper {
         data[0] = LiquidityConfigurations.encodeParams(0.5e18 + 1, 0, activeId + 1);
         vm.expectRevert(PackedUint128Math.PackedUint128Math__SubUnderflow.selector);
         params = IBinPoolManager.MintParams({
-            liquidityConfigs: data,
-            amountIn: PackedUint128Math.encode(1e18, 1e18),
-            salt: 0
+            liquidityConfigs: data, amountIn: PackedUint128Math.encode(1e18, 1e18), salt: 0
         });
         poolManager.mint(key, params, "0x00");
     }

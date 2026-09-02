@@ -110,9 +110,7 @@ contract CLCustomCurveHookTest is Test, Deployers, TokenFixture {
         BalanceDelta delta = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -int128(amtIn),
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -int128(amtIn), sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""

@@ -118,10 +118,11 @@ contract ProtocolFeeController is IProtocolFeeController, Ownable2Step {
             /// totalSwapFee = protocolFee + (1 - protocolFee) * lpFee = protocolFee / protocolFeeSplitRatio
             uint24 oneDirectionProtocolFee = uint24(
                 lpFee * ONE_HUNDRED_PERCENT_RATIO
-                    / (
-                        lpFee + ONE_HUNDRED_PERCENT_RATIO * ONE_HUNDRED_PERCENT_RATIO / protocolFeeSplitRatio
-                            - ONE_HUNDRED_PERCENT_RATIO
-                    )
+                    / (lpFee
+                        + ONE_HUNDRED_PERCENT_RATIO
+                        * ONE_HUNDRED_PERCENT_RATIO
+                        / protocolFeeSplitRatio
+                        - ONE_HUNDRED_PERCENT_RATIO)
             );
 
             // cap the protocol fee at 0.4%, if it's over the limit we set it to the max

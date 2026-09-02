@@ -184,9 +184,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             abi.encode(1 ether, 0, 0)
@@ -228,9 +226,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: 1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: 1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             abi.encode(-1 ether, 0, 0)
@@ -271,9 +267,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             abi.encode(1 ether, -1 ether, 0)
@@ -315,9 +309,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             abi.encode(1 ether, -0.5 ether, -0.5 ether)
@@ -360,9 +352,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             // double the swap amt
@@ -400,9 +390,7 @@ contract CLHookReturnsDeltaTest is Test, Deployers, TokenFixture {
         (BalanceDelta delta) = router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             abi.encode(0.5 ether, 0, 0)

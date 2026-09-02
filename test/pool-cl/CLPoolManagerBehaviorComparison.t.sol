@@ -78,12 +78,13 @@ abstract contract V3Fuzzer is V3Helper, Deployers, Fuzzers, IUniswapV3MintCallba
         int256 liquidityDeltaUnbound,
         bool tight
     ) internal {
-        ICLPoolManager.ModifyLiquidityParams memory infinityLiquidityParams = ICLPoolManager.ModifyLiquidityParams({
-            tickLower: lowerTickUnsanitized,
-            tickUpper: upperTickUnsanitized,
-            liquidityDelta: liquidityDeltaUnbound,
-            salt: 0
-        });
+        ICLPoolManager.ModifyLiquidityParams memory infinityLiquidityParams =
+            ICLPoolManager.ModifyLiquidityParams({
+                tickLower: lowerTickUnsanitized,
+                tickUpper: upperTickUnsanitized,
+                liquidityDelta: liquidityDeltaUnbound,
+                salt: 0
+            });
 
         infinityLiquidityParams = tight
             ? createFuzzyLiquidityParamsWithTightBound(key_, infinityLiquidityParams, sqrtPriceX96, 20)

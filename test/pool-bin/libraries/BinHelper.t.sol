@@ -70,17 +70,12 @@ contract BinHelperTest is BinTestHelper {
         // workaround instead of vm.assume to prevent too many global reject
         bool validParameters;
         validParameters = price > 0
-            && (
-                binReserveX == 0
-                    || (
-                        price <= type(uint256).max / binReserveX
-                            && price * binReserveX <= (type(uint256).max - binReserveY) << 128
-                    )
-            )
-            && (
-                amountInX == 0
-                    || (price <= type(uint256).max / amountInX && price * amountInX <= (type(uint256).max - amountInY) << 128)
-            );
+            && (binReserveX == 0
+                || (price <= type(uint256).max / binReserveX
+                    && price * binReserveX <= (type(uint256).max - binReserveY) << 128))
+            && (amountInX == 0
+                || (price <= type(uint256).max / amountInX
+                    && price * amountInX <= (type(uint256).max - amountInY) << 128));
         if (!validParameters) return;
 
         bytes32 binReserves = binReserveX.encode(binReserveY);
@@ -130,8 +125,8 @@ contract BinHelperTest is BinTestHelper {
         uint256 userReceivedX = shares.mulDivRoundDown(binReserves.decodeX(), totalSupply);
         uint256 userReceivedY = shares.mulDivRoundDown(binReserves.decodeY(), totalSupply);
         uint256 receivedInY = userReceivedX.mulShiftRoundDown(price, Constants.SCALE_OFFSET) + userReceivedY;
-        uint256 sentInY =
-            price.mulShiftRoundDown(effectiveAmountsIn.decodeX(), Constants.SCALE_OFFSET) + effectiveAmountsIn.decodeY();
+        uint256 sentInY = price.mulShiftRoundDown(effectiveAmountsIn.decodeX(), Constants.SCALE_OFFSET)
+            + effectiveAmountsIn.decodeY();
 
         assertApproxEqAbs(receivedInY, sentInY, ((price - 1) >> 128) + 5, "test_TryExploitShares::1");
     }
@@ -171,13 +166,9 @@ contract BinHelperTest is BinTestHelper {
 
         ///@dev temp fix for "The `vm.assume` cheatcode rejected too many inputs"
         ///     dont see a clear way to rewrite this with bound
-        if (
-            !(
-                price * amountXIn <= (type(uint256).max - uint256(amountYIn)) << 128
+        if (!(price * amountXIn <= (type(uint256).max - uint256(amountYIn)) << 128
                     && (reserveX == 0 || price <= type(uint256).max / reserveX)
-                    && price * reserveX <= (type(uint256).max - uint256(reserveY)) << 128
-            )
-        ) {
+                    && price * reserveX <= (type(uint256).max - uint256(reserveY)) << 128)) {
             vm.expectRevert();
         }
         // make sure p*x+y doesn't overflow

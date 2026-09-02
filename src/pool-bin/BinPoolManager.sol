@@ -84,12 +84,7 @@ contract BinPoolManager is IBinPoolManager, ProtocolFees, Extsload {
     }
 
     /// @inheritdoc IBinPoolManager
-    function getNextNonEmptyBin(PoolId id, bool swapForY, uint24 binId)
-        external
-        view
-        override
-        returns (uint24 nextId)
-    {
+    function getNextNonEmptyBin(PoolId id, bool swapForY, uint24 binId) external view override returns (uint24 nextId) {
         nextId = pools[id].getNextNonEmptyBin(swapForY, binId);
     }
 
@@ -241,10 +236,7 @@ contract BinPoolManager is IBinPoolManager, ProtocolFees, Extsload {
         bytes32[] memory amountRemoved;
         (delta, binIds, amountRemoved) = pool.burn(
             BinPool.BurnParams({
-                from: msg.sender,
-                ids: params.ids,
-                amountsToBurn: params.amountsToBurn,
-                salt: params.salt
+                from: msg.sender, ids: params.ids, amountsToBurn: params.amountsToBurn, salt: params.salt
             })
         );
 

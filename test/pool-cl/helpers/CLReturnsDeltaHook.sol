@@ -91,7 +91,9 @@ contract CLReturnsDeltaHook is BaseCLTestHook {
 
         if (params.zeroForOne == params.amountSpecified < 0) {
             // the specified token is token0
-            if (hookDeltaSpecified < 0) key.currency0.settle(vault, address(this), uint128(-hookDeltaSpecified), false);
+            if (hookDeltaSpecified < 0) {
+                key.currency0.settle(vault, address(this), uint128(-hookDeltaSpecified), false);
+            }
             if (hookDeltaSpecified > 0) key.currency0.take(vault, address(this), uint128(hookDeltaSpecified), false);
 
             if (hookDeltaUnspecified < 0) {
@@ -102,7 +104,9 @@ contract CLReturnsDeltaHook is BaseCLTestHook {
             }
         } else {
             // the specified token is token1
-            if (hookDeltaSpecified < 0) key.currency1.settle(vault, address(this), uint128(-hookDeltaSpecified), false);
+            if (hookDeltaSpecified < 0) {
+                key.currency1.settle(vault, address(this), uint128(-hookDeltaSpecified), false);
+            }
             if (hookDeltaSpecified > 0) key.currency1.take(vault, address(this), uint128(hookDeltaSpecified), false);
 
             if (hookDeltaUnspecified < 0) {

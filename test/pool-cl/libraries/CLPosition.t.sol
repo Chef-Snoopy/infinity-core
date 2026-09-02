@@ -91,17 +91,12 @@ contract CLPositionTest is Test {
         }
     }
 
-    function test_fuzz_calculatePositionKey(address owner, int24 tickLower, int24 tickUpper, bytes32 salt)
-        public
-        pure
-    {
+    function test_fuzz_calculatePositionKey(address owner, int24 tickLower, int24 tickUpper, bytes32 salt) public pure {
         bytes32 positionKey = CLPosition.calculatePositionKey(owner, tickLower, tickUpper, salt);
         assertEq(positionKey, keccak256(abi.encodePacked(tickLower, tickUpper, owner, salt)));
     }
 
-    function test_MixFuzz(address owner, int24 tickLower, int24 tickUpper, bytes32 salt, int128 liquidityDelta)
-        public
-    {
+    function test_MixFuzz(address owner, int24 tickLower, int24 tickUpper, bytes32 salt, int128 liquidityDelta) public {
         liquidityDelta = int128(bound(liquidityDelta, 1, type(int128).max));
         CLPosition.Info storage info = pool.positions.get(owner, tickLower, tickUpper, salt);
         info.update(liquidityDelta, 0, 0);

@@ -177,8 +177,8 @@ library BinPool {
 
                     if (
                         self.reserveOfBin[swapState.activeId].getLiquidity(
-                            swapState.activeId.getPriceFromId(params.binStep)
-                        ) > Constants.MAX_LIQUIDITY_PER_BIN
+                                swapState.activeId.getPriceFromId(params.binStep)
+                            ) > Constants.MAX_LIQUIDITY_PER_BIN
                     ) {
                         revert BinPool__MaxLiquidityPerBinExceeded();
                     }

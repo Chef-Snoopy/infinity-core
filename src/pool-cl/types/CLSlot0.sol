@@ -81,18 +81,19 @@ library CLSlot0Library {
 
     function setProtocolFee(CLSlot0 _packed, uint24 _protocolFee) internal pure returns (CLSlot0 _result) {
         assembly ("memory-safe") {
-            _result :=
-                or(
-                    and(not(shl(PROTOCOL_FEE_OFFSET, MASK_24_BITS)), _packed),
-                    shl(PROTOCOL_FEE_OFFSET, and(MASK_24_BITS, _protocolFee))
-                )
+            _result := or(
+                and(not(shl(PROTOCOL_FEE_OFFSET, MASK_24_BITS)), _packed),
+                shl(PROTOCOL_FEE_OFFSET, and(MASK_24_BITS, _protocolFee))
+            )
         }
     }
 
     function setLpFee(CLSlot0 _packed, uint24 _lpFee) internal pure returns (CLSlot0 _result) {
         assembly ("memory-safe") {
-            _result :=
-                or(and(not(shl(LP_FEE_OFFSET, MASK_24_BITS)), _packed), shl(LP_FEE_OFFSET, and(MASK_24_BITS, _lpFee)))
+            _result := or(
+                and(not(shl(LP_FEE_OFFSET, MASK_24_BITS)), _packed),
+                shl(LP_FEE_OFFSET, and(MASK_24_BITS, _lpFee))
+            )
         }
     }
 }

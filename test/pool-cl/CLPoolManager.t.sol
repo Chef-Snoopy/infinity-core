@@ -797,10 +797,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e24,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e24, salt: 0
             }),
             ""
         );
@@ -823,12 +820,12 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
             assertEq(
                 poolManager.getPosition(key.toId(), address(router), TickMath.MIN_TICK, TickMath.MAX_TICK, 0)
-                    .feeGrowthInside0LastX128,
+                .feeGrowthInside0LastX128,
                 0
             );
             assertEq(
                 poolManager.getPosition(key.toId(), address(router), TickMath.MIN_TICK, TickMath.MAX_TICK, 0)
-                    .feeGrowthInside1LastX128,
+                .feeGrowthInside1LastX128,
                 0
             );
         }
@@ -836,10 +833,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e4,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e4, salt: 0
             }),
             ""
         );
@@ -863,12 +857,12 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
             assertEq(
                 poolManager.getPosition(key.toId(), address(router), TickMath.MIN_TICK, TickMath.MAX_TICK, 0)
-                    .feeGrowthInside0LastX128,
+                .feeGrowthInside0LastX128,
                 0
             );
             assertEq(
                 poolManager.getPosition(key.toId(), address(router), TickMath.MIN_TICK, TickMath.MAX_TICK, 0)
-                    .feeGrowthInside1LastX128,
+                .feeGrowthInside1LastX128,
                 0
             );
         }
@@ -896,10 +890,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e18, salt: 0
             }),
             ""
         );
@@ -909,10 +900,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e18, salt: 0
             }),
             ""
         );
@@ -922,10 +910,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: -1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: -1e18, salt: 0
             }),
             ""
         );
@@ -935,9 +920,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -0.1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -0.1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""
@@ -945,10 +928,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e18, salt: 0
             }),
             ""
         );
@@ -960,10 +940,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e18, salt: 0
             }),
             ""
         );
@@ -973,9 +950,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -0.1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -0.1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""
@@ -983,10 +958,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         (, feeDelta) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: -1e18,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: -1e18, salt: 0
             }),
             ""
         );
@@ -1244,7 +1216,9 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         // remove half
         router.modifyPosition(
             key,
-            ICLPoolManager.ModifyLiquidityParams({tickLower: 46000, tickUpper: 46050, liquidityDelta: -5 * 1e8, salt: 0}),
+            ICLPoolManager.ModifyLiquidityParams({
+                tickLower: 46000, tickUpper: 46050, liquidityDelta: -5 * 1e8, salt: 0
+            }),
             ""
         );
         vm.snapshotGasLastCall("removeLiquidity_toNonEmpty");
@@ -1267,7 +1241,9 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
         router.modifyPosition(
             key,
-            ICLPoolManager.ModifyLiquidityParams({tickLower: 46000, tickUpper: 46050, liquidityDelta: -5 * 1e8, salt: 0}),
+            ICLPoolManager.ModifyLiquidityParams({
+                tickLower: 46000, tickUpper: 46050, liquidityDelta: -5 * 1e8, salt: 0
+            }),
             ""
         );
 
@@ -1380,10 +1356,11 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
         BalanceDelta balanceDelta;
         // create a new context to swallow up the revert
-        try CLPoolManagerTest(payable(this)).tryExecute(
-            address(router),
-            abi.encodeWithSelector(CLPoolManagerRouter.modifyPosition.selector, key, params, ZERO_BYTES)
-        ) {
+        try CLPoolManagerTest(payable(this))
+            .tryExecute(
+                address(router),
+                abi.encodeWithSelector(CLPoolManagerRouter.modifyPosition.selector, key, params, ZERO_BYTES)
+            ) {
             revert("must revert");
         } catch (bytes memory result) {
             balanceDelta = abi.decode(result, (BalanceDelta));
@@ -1423,10 +1400,11 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
         BalanceDelta balanceDelta;
         // create a new context to swallow up the revert
-        try CLPoolManagerTest(payable(this)).tryExecute(
-            address(router),
-            abi.encodeWithSelector(CLPoolManagerRouter.modifyPosition.selector, key, params, ZERO_BYTES)
-        ) {
+        try CLPoolManagerTest(payable(this))
+            .tryExecute(
+                address(router),
+                abi.encodeWithSelector(CLPoolManagerRouter.modifyPosition.selector, key, params, ZERO_BYTES)
+            ) {
             revert("must revert");
         } catch (bytes memory result) {
             balanceDelta = abi.decode(result, (BalanceDelta));
@@ -1593,10 +1571,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e24,
-                salt: salt
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e24, salt: salt
             }),
             ""
         );
@@ -1615,10 +1590,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e4,
-                salt: salt
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e4, salt: salt
             }),
             ""
         );
@@ -1636,10 +1608,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: -1e4,
-                salt: salt
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: -1e4, salt: salt
             }),
             ""
         );
@@ -1682,10 +1651,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e24,
-                salt: salt1
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e24, salt: salt1
             }),
             ""
         );
@@ -1709,10 +1675,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e4,
-                salt: salt2
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e4, salt: salt2
             }),
             ""
         );
@@ -1737,10 +1700,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e10,
-                salt: salt0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e10, salt: salt0
             }),
             ""
         );
@@ -1786,10 +1746,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: 46053,
-                tickUpper: 46055,
-                liquidityDelta: 1000000 ether,
-                salt: 0
+                tickLower: 46053, tickUpper: 46055, liquidityDelta: 1000000 ether, salt: 0
             }),
             ""
         );
@@ -1803,9 +1760,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: 10 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: 10 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""
@@ -1943,9 +1898,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
         // sell base token(x) for quote token(y), pricea(y / x) decreases
         ICLPoolManager.SwapParams memory params = ICLPoolManager.SwapParams({
-            zeroForOne: true,
-            amountSpecified: -0.1 ether,
-            sqrtPriceLimitX96: SQRT_RATIO_1_2
+            zeroForOne: true, amountSpecified: -0.1 ether, sqrtPriceLimitX96: SQRT_RATIO_1_2
         });
 
         CLPoolManagerRouter.SwapTestSettings memory testSettings =
@@ -2000,10 +1953,11 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
 
         BalanceDelta balanceDelta;
         // create a new context to swallow up the revert
-        try CLPoolManagerTest(payable(this)).tryExecute(
-            address(router),
-            abi.encodeWithSelector(CLPoolManagerRouter.swap.selector, key, params, testSettings, ZERO_BYTES)
-        ) {
+        try CLPoolManagerTest(payable(this))
+            .tryExecute(
+                address(router),
+                abi.encodeWithSelector(CLPoolManagerRouter.swap.selector, key, params, testSettings, ZERO_BYTES)
+            ) {
             revert("must revert");
         } catch (bytes memory result) {
             balanceDelta = abi.decode(result, (BalanceDelta));
@@ -2012,8 +1966,9 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         bytes memory beforePayload =
             abi.encodeWithSelector(MockHooks.beforeSwap.selector, address(router), key, params, ZERO_BYTES);
 
-        bytes memory afterPayload =
-            abi.encodeWithSelector(MockHooks.afterSwap.selector, address(router), key, params, balanceDelta, ZERO_BYTES);
+        bytes memory afterPayload = abi.encodeWithSelector(
+            MockHooks.afterSwap.selector, address(router), key, params, balanceDelta, ZERO_BYTES
+        );
 
         vm.expectCall(address(mockAddr), 0, beforePayload, 1);
         vm.expectCall(address(mockAddr), 0, afterPayload, 1);
@@ -2110,10 +2065,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -120,
-                tickUpper: 120,
-                liquidityDelta: 1000000000000000000,
-                salt: 0
+                tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000, salt: 0
             }),
             ZERO_BYTES
         );
@@ -2146,10 +2098,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -120,
-                tickUpper: 120,
-                liquidityDelta: 1000000000000000000,
-                salt: 0
+                tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000, salt: 0
             }),
             ZERO_BYTES
         );
@@ -2277,10 +2226,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -120,
-                tickUpper: 120,
-                liquidityDelta: 1000000000000000000,
-                salt: 0
+                tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000, salt: 0
             }),
             ZERO_BYTES
         );
@@ -2309,10 +2255,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -120,
-                tickUpper: 120,
-                liquidityDelta: 1000000000000000000,
-                salt: 0
+                tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000, salt: 0
             }),
             ZERO_BYTES
         );
@@ -2354,10 +2297,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -120,
-                tickUpper: 120,
-                liquidityDelta: 1000000000000000000,
-                salt: 0
+                tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000, salt: 0
             }),
             ZERO_BYTES
         );
@@ -2916,10 +2856,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: TickMath.MIN_TICK,
-                tickUpper: TickMath.MAX_TICK,
-                liquidityDelta: 1e24,
-                salt: 0
+                tickLower: TickMath.MIN_TICK, tickUpper: TickMath.MAX_TICK, liquidityDelta: 1e24, salt: 0
             }),
             ""
         );
@@ -2981,9 +2918,7 @@ contract CLPoolManagerTest is Test, NoIsolate, Deployers, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: 0.1 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: 0.1 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""

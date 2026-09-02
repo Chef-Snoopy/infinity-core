@@ -558,7 +558,9 @@ contract ProtocolFeeControllerTest is Test, BinTestHelper, TokenFixture {
         IERC20(Currency.unwrap(currency1)).approve(address(router), 10000 ether);
         router.modifyPosition(
             key,
-            ICLPoolManager.ModifyLiquidityParams({tickLower: -10, tickUpper: 10, liquidityDelta: 1000000 ether, salt: 0}),
+            ICLPoolManager.ModifyLiquidityParams({
+                tickLower: -10, tickUpper: 10, liquidityDelta: 1000000 ether, salt: 0
+            }),
             ""
         );
 
@@ -567,9 +569,7 @@ contract ProtocolFeeControllerTest is Test, BinTestHelper, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -100 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -100 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""
@@ -609,7 +609,9 @@ contract ProtocolFeeControllerTest is Test, BinTestHelper, TokenFixture {
         IERC20(Currency.unwrap(currency1)).approve(address(router), 10000 ether);
         router.modifyPosition(
             key,
-            ICLPoolManager.ModifyLiquidityParams({tickLower: -10, tickUpper: 10, liquidityDelta: 1000000 ether, salt: 0}),
+            ICLPoolManager.ModifyLiquidityParams({
+                tickLower: -10, tickUpper: 10, liquidityDelta: 1000000 ether, salt: 0
+            }),
             ""
         );
 
@@ -618,9 +620,7 @@ contract ProtocolFeeControllerTest is Test, BinTestHelper, TokenFixture {
         router.swap(
             key,
             ICLPoolManager.SwapParams({
-                zeroForOne: true,
-                amountSpecified: -100 ether,
-                sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
+                zeroForOne: true, amountSpecified: -100 ether, sqrtPriceLimitX96: TickMath.MIN_SQRT_RATIO + 1
             }),
             CLPoolManagerRouter.SwapTestSettings({withdrawTokens: true, settleUsingTransfer: true}),
             ""
@@ -638,10 +638,7 @@ contract ProtocolFeeControllerTest is Test, BinTestHelper, TokenFixture {
         (, BalanceDelta accumulatedLPFee) = router.modifyPosition(
             key,
             ICLPoolManager.ModifyLiquidityParams({
-                tickLower: -10,
-                tickUpper: 10,
-                liquidityDelta: -1000000 ether,
-                salt: 0
+                tickLower: -10, tickUpper: 10, liquidityDelta: -1000000 ether, salt: 0
             }),
             ""
         );

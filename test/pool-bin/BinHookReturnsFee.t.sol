@@ -126,8 +126,9 @@ contract BinHookReturnsFeeTest is Test, BinTestHelper {
     }
 
     function test_dynamicReturnSwapFee_initializeZeroSwapFee() public {
-        key.parameters =
-            BinPoolParametersHelper.setBinStep(bytes32(uint256(dynamicReturnsFeesHook.getHooksRegistrationBitmap())), 1);
+        key.parameters = BinPoolParametersHelper.setBinStep(
+            bytes32(uint256(dynamicReturnsFeesHook.getHooksRegistrationBitmap())), 1
+        );
         poolManager.initialize(key, activeId);
         assertEq(_fetchPoolSwapFee(key), 0);
     }
@@ -158,8 +159,9 @@ contract BinHookReturnsFeeTest is Test, BinTestHelper {
         // fees returned by beforeSwap are not written to storage
 
         // create a new pool with an initial fee of 123
-        key.parameters =
-            BinPoolParametersHelper.setBinStep(bytes32(uint256(dynamicReturnsFeesHook.getHooksRegistrationBitmap())), 1);
+        key.parameters = BinPoolParametersHelper.setBinStep(
+            bytes32(uint256(dynamicReturnsFeesHook.getHooksRegistrationBitmap())), 1
+        );
         poolManager.initialize(key, activeId);
         IBinPoolManager.MintParams memory mintParams = _getSingleBinMintParams(activeId, 1 ether, 1 ether);
         binLiquidityHelper.mint(key, mintParams, abi.encode(0));

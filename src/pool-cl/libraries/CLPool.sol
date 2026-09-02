@@ -115,23 +115,23 @@ library CLPool {
                 // current tick is below the passed range; liquidity can only become in range by crossing from left to
                 // right, when we'll need _more_ currency0 (it's becoming more valuable) so user must provide it
                 amount0 = SqrtPriceMath.getAmount0Delta(
-                    TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                ).toInt128();
+                        TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
+                    ).toInt128();
             } else if (tick < tickUpper) {
                 amount0 = SqrtPriceMath.getAmount0Delta(
-                    sqrtPriceX96, TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                ).toInt128();
+                        sqrtPriceX96, TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
+                    ).toInt128();
                 amount1 = SqrtPriceMath.getAmount1Delta(
-                    TickMath.getSqrtRatioAtTick(tickLower), sqrtPriceX96, liquidityDelta
-                ).toInt128();
+                        TickMath.getSqrtRatioAtTick(tickLower), sqrtPriceX96, liquidityDelta
+                    ).toInt128();
 
                 self.liquidity = LiquidityMath.addDelta(self.liquidity, liquidityDelta);
             } else {
                 // current tick is above the passed range; liquidity can only become in range by crossing from right to
                 // left, when we'll need _more_ currency1 (it's becoming more valuable) so user must provide it
                 amount1 = SqrtPriceMath.getAmount1Delta(
-                    TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                ).toInt128();
+                        TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
+                    ).toInt128();
             }
 
             // Amount required for updating liquidity
@@ -201,11 +201,9 @@ library CLPool {
         // check price limit
         // Swaps can never occur at MIN_TICK, only at MIN_TICK + 1, except at initialization of a pool
         // Under certain circumstances outlined below, the tick will preemptively reach MIN_TICK without swapping there
-        if (
-            zeroForOne
+        if (zeroForOne
                 ? (sqrtPriceLimitX96 >= slot0Start.sqrtPriceX96() || sqrtPriceLimitX96 <= TickMath.MIN_SQRT_RATIO)
-                : (sqrtPriceLimitX96 <= slot0Start.sqrtPriceX96() || sqrtPriceLimitX96 >= TickMath.MAX_SQRT_RATIO)
-        ) {
+                : (sqrtPriceLimitX96 <= slot0Start.sqrtPriceX96() || sqrtPriceLimitX96 >= TickMath.MAX_SQRT_RATIO)) {
             revert InvalidSqrtPriceLimit(slot0Start.sqrtPriceX96(), sqrtPriceLimitX96);
         }
 
@@ -294,7 +292,7 @@ library CLPool {
                     // cannot overflow due to limits on the size of protocolFee and params.amountSpecified
                     // this rounds down to favor LPs over the protocol
                     uint256 delta = (state.swapFee == state.protocolFee)
-                        ? step.feeAmount // lp fee is 0, so the entire fee is owed to the protocol instead
+                        ? step.feeAmount  // lp fee is 0, so the entire fee is owed to the protocol instead
                         : (step.amountIn + step.feeAmount) * state.protocolFee / ProtocolFeeLibrary.PIPS_DENOMINATOR;
 
                     // subtract it from the total fee then left over is the LP fee
@@ -306,8 +304,9 @@ library CLPool {
             // update global fee tracker
             if (state.liquidity > 0) {
                 unchecked {
-                    state.feeGrowthGlobalX128 +=
-                        UnsafeMath.simpleMulDiv(step.feeAmount, FixedPoint128.Q128, state.liquidity);
+                    state.feeGrowthGlobalX128 += UnsafeMath.simpleMulDiv(
+                        step.feeAmount, FixedPoint128.Q128, state.liquidity
+                    );
                 }
             }
 
@@ -318,11 +317,12 @@ library CLPool {
             if (state.sqrtPriceX96 == step.sqrtPriceNextX96) {
                 // if the tick is initialized, run the tick transition
                 if (step.initialized) {
-                    int128 liquidityNet = self.ticks.cross(
-                        step.tickNext,
-                        (zeroForOne ? state.feeGrowthGlobalX128 : self.feeGrowthGlobal0X128),
-                        (zeroForOne ? self.feeGrowthGlobal1X128 : state.feeGrowthGlobalX128)
-                    );
+                    int128 liquidityNet = self.ticks
+                        .cross(
+                            step.tickNext,
+                            (zeroForOne ? state.feeGrowthGlobalX128 : self.feeGrowthGlobal0X128),
+                            (zeroForOne ? self.feeGrowthGlobal1X128 : state.feeGrowthGlobalX128)
+                        );
                     // if we're moving leftward, we interpret liquidityNet as the opposite sign
                     // safe because liquidityNet cannot be type(int128).min
                     unchecked {
@@ -361,7 +361,10 @@ library CLPool {
 
         unchecked {
             (int128 amount0, int128 amount1) = zeroForOne == exactInput
-                ? ((params.amountSpecified - state.amountSpecifiedRemaining).toInt128(), state.amountCalculated.toInt128())
+                ? (
+                    (params.amountSpecified - state.amountSpecifiedRemaining).toInt128(),
+                    state.amountCalculated.toInt128()
+                )
                 : (
                     (state.amountCalculated.toInt128()),
                     (params.amountSpecified - state.amountSpecifiedRemaining).toInt128()
@@ -394,24 +397,26 @@ library CLPool {
             ///@dev  update ticks if nencessary
             if (params.liquidityDelta != 0) {
                 cache.maxLiquidityPerTick = Tick.tickSpacingToMaxLiquidityPerTick(params.tickSpacing);
-                cache.flippedLower = self.ticks.update(
-                    params.tickLower,
-                    tick,
-                    params.liquidityDelta,
-                    _feeGrowthGlobal0X128,
-                    _feeGrowthGlobal1X128,
-                    false,
-                    cache.maxLiquidityPerTick
-                );
-                cache.flippedUpper = self.ticks.update(
-                    params.tickUpper,
-                    tick,
-                    params.liquidityDelta,
-                    _feeGrowthGlobal0X128,
-                    _feeGrowthGlobal1X128,
-                    true,
-                    cache.maxLiquidityPerTick
-                );
+                cache.flippedLower = self.ticks
+                    .update(
+                        params.tickLower,
+                        tick,
+                        params.liquidityDelta,
+                        _feeGrowthGlobal0X128,
+                        _feeGrowthGlobal1X128,
+                        false,
+                        cache.maxLiquidityPerTick
+                    );
+                cache.flippedUpper = self.ticks
+                    .update(
+                        params.tickUpper,
+                        tick,
+                        params.liquidityDelta,
+                        _feeGrowthGlobal0X128,
+                        _feeGrowthGlobal1X128,
+                        true,
+                        cache.maxLiquidityPerTick
+                    );
 
                 if (cache.flippedLower) {
                     self.tickBitmap.flipTick(params.tickLower, params.tickSpacing);
@@ -421,16 +426,17 @@ library CLPool {
                 }
             }
 
-            (cache.feeGrowthInside0X128, cache.feeGrowthInside1X128) = self.ticks.getFeeGrowthInside(
-                params.tickLower, params.tickUpper, tick, _feeGrowthGlobal0X128, _feeGrowthGlobal1X128
-            );
+            (cache.feeGrowthInside0X128, cache.feeGrowthInside1X128) = self.ticks
+                .getFeeGrowthInside(
+                    params.tickLower, params.tickUpper, tick, _feeGrowthGlobal0X128, _feeGrowthGlobal1X128
+                );
         }
 
         ///@dev update user position and collect fees
         /// must be done after ticks are updated in case of a 0 -> 1 flip
-        (cache.feesOwed0, cache.feesOwed1) = self.positions.get(
-            params.owner, params.tickLower, params.tickUpper, params.salt
-        ).update(params.liquidityDelta, cache.feeGrowthInside0X128, cache.feeGrowthInside1X128);
+        (cache.feesOwed0, cache.feesOwed1) = self.positions
+            .get(params.owner, params.tickLower, params.tickUpper, params.salt)
+            .update(params.liquidityDelta, cache.feeGrowthInside0X128, cache.feeGrowthInside1X128);
 
         ///@dev clear any tick data that is no longer needed
         /// must be done after fee collection in case of a 1 -> 0 flip
