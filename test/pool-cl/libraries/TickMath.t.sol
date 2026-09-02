@@ -234,6 +234,10 @@ contract TickMathTestTest is Test {
         // check upper price of tick
         assertEq(TickMath.getTickAtSqrtRatio(priceAtNextTick - 1), tick, "upper price");
         // check lower price of next tick
-        assertEq(TickMath.getTickAtSqrtRatio(priceAtNextTick), nextTick, "lower price next tick");
+        // skipped when nextTick == MAX_TICK, as getTickAtSqrtRatio's upper bound is exclusive:
+        // the price can never reach getSqrtRatioAtTick(MAX_TICK)
+        if (nextTick < TickMath.MAX_TICK) {
+            assertEq(TickMath.getTickAtSqrtRatio(priceAtNextTick), nextTick, "lower price next tick");
+        }
     }
 }
