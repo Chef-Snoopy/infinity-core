@@ -176,7 +176,8 @@ library CLHooks {
                     hooks,
                     abi.encodeCall(ICLHooks.afterSwap, (msg.sender, key, params, delta, hookData)),
                     key.parameters.hasOffsetEnabled(HOOKS_AFTER_SWAP_RETURNS_DELTA_OFFSET)
-                ).toInt128();
+                )
+                .toInt128();
         }
 
         BalanceDelta hookDelta;

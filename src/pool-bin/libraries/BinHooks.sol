@@ -200,7 +200,8 @@ library BinHooks {
                     hooks,
                     abi.encodeCall(IBinHooks.afterSwap, (msg.sender, key, swapForY, amountSpecified, delta, hookData)),
                     key.parameters.hasOffsetEnabled(HOOKS_AFTER_SWAP_RETURNS_DELTA_OFFSET)
-                ).toInt128();
+                )
+                .toInt128();
         }
 
         BalanceDelta hookDelta;

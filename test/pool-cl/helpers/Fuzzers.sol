@@ -85,7 +85,8 @@ contract Fuzzers is StdUtils {
                     maxAmount0,
                     maxAmount1
                 )
-            ).toInt256();
+            )
+            .toInt256();
 
         return liquidityMaxByAmount;
     }

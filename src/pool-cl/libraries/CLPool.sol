@@ -72,7 +72,10 @@ library CLPool {
 
         tick = TickMath.getTickAtSqrtRatio(sqrtPriceX96);
 
-        self.slot0 = CLSlot0.wrap(bytes32(0)).setSqrtPriceX96(sqrtPriceX96).setTick(tick).setProtocolFee(protocolFee)
+        self.slot0 = CLSlot0.wrap(bytes32(0))
+            .setSqrtPriceX96(sqrtPriceX96)
+            .setTick(tick)
+            .setProtocolFee(protocolFee)
             .setLpFee(lpFee);
     }
 
@@ -116,14 +119,17 @@ library CLPool {
                 // right, when we'll need _more_ currency0 (it's becoming more valuable) so user must provide it
                 amount0 = SqrtPriceMath.getAmount0Delta(
                         TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                    ).toInt128();
+                    )
+                    .toInt128();
             } else if (tick < tickUpper) {
                 amount0 = SqrtPriceMath.getAmount0Delta(
                         sqrtPriceX96, TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                    ).toInt128();
+                    )
+                    .toInt128();
                 amount1 = SqrtPriceMath.getAmount1Delta(
                         TickMath.getSqrtRatioAtTick(tickLower), sqrtPriceX96, liquidityDelta
-                    ).toInt128();
+                    )
+                    .toInt128();
 
                 self.liquidity = LiquidityMath.addDelta(self.liquidity, liquidityDelta);
             } else {
@@ -131,7 +137,8 @@ library CLPool {
                 // left, when we'll need _more_ currency1 (it's becoming more valuable) so user must provide it
                 amount1 = SqrtPriceMath.getAmount1Delta(
                         TickMath.getSqrtRatioAtTick(tickLower), TickMath.getSqrtRatioAtTick(tickUpper), liquidityDelta
-                    ).toInt128();
+                    )
+                    .toInt128();
             }
 
             // Amount required for updating liquidity
